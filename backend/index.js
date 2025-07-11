@@ -3,6 +3,10 @@ const app = express();
 const db = require('./config/db');
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+
 const PORT = process.env.PORT;
 
 // Middleware to parse JSON

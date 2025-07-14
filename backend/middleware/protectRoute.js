@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-
+const User = require('../models/userModel')
 /**
  * Middleware to verify JWT token from cookies.
  * Attaches the decoded userId to req if valid.
  */
-const verifyToken = (req, res, next) => {
+const protectRoute = (req, res, next) => {
 	// Retrieve token from cookies
 	const token = req.cookies.token;
 
@@ -43,4 +43,28 @@ const verifyToken = (req, res, next) => {
 	}
 };
 
-module.exports = verifyToken;
+
+const adminRoute = async (req, res, next) => {
+	try{
+		const user = await User.findById(req.userId);
+		console.log(user, "adminRoute Hit");
+		if(user.role === "admin"){
+			next()
+		}
+		return res.status(403).json({
+			success: false,
+			message: "Forbidden - not an admin"
+		});
+
+	} catch (error) {
+		// Handle token verification or server errors
+		console.error("Error in verifyAdmin:", error);
+		return res.status(500).json({
+			success: false,
+			message: "Server error"
+		});
+	}
+
+}
+
+module.exports = {protectRoute, adminRoute};

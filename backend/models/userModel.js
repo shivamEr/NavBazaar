@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user'
+    },
+    // Add a field for the user's profile picture
     lastLogin: {
         type: Date,
         default: Date.now,
@@ -23,10 +29,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-     createdAt: {
-        type: Date,
-        default: Date.now
-    },
+
     resetPasswordToken: String,
     resetPasswordExpiresAt: Date,
     verificationToken: String,

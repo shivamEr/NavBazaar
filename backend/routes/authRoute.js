@@ -7,28 +7,29 @@ const {
     verifyEmail,
     login,
     logout,
-    checkAuth,
+    getProfile,
     forgotPassword,
     resetPassword
 } = require('../controllers/authController');
 
 // Middleware
-const verifyToken = require('../middleware/verifyToken');
+const { protectRoute } = require('../middleware/protectRoute');
+const loginLimiter = require('../rate_limiter/rateLimitor');
 
 /**
  * @description Authentication Routes
  * All routes related to user authentication and authorization.
  */
 
-// Check if user is authenticated
-authRouter.get('/check-auth', verifyToken, checkAuth);
+// get user profile with secure token
+authRouter.get('/profile', protectRoute, getProfile);
 
 // Signup and Email Verification
 authRouter.post('/signup', signup);
 authRouter.post('/verify-email', verifyEmail);
 
 // Login & Logout
-authRouter.post('/login', login);
+authRouter.post('/login', loginLimiter, login);
 authRouter.post('/logout', logout);
 
 // Password Reset Flow

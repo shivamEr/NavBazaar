@@ -134,12 +134,16 @@ const login = async (req, res) => {
 
 // LogOut and clear cookies
 const logout = async (req, res) => {
-    res.clearCookie("token");
-    res.status(200).json({ success: true, message: "Logged out successfully" });
+    try {
+        res.clearCookie("token");
+        res.status(200).json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+        console.log("Error in logout ", error);
+    }
 };
 
 // Check authentication of user After token verification
-const checkAuth = async (req, res) => {
+const getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password");
         if (!user) {
@@ -221,7 +225,7 @@ module.exports = {
     verifyEmail,
     login,
     logout,
-    checkAuth,
+    getProfile,
     forgotPassword,
     resetPassword
 };

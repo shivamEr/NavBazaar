@@ -48,8 +48,8 @@ const adminRoute = async (req, res, next) => {
 	try{
 		const user = await User.findById(req.userId);
 		console.log(user, "adminRoute Hit");
-		if(user.role === "admin"){
-			next()
+		if(user && user.role === "admin"){
+			return next()
 		}
 		return res.status(403).json({
 			success: false,

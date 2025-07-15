@@ -13,9 +13,11 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.static('public'))
 
-const authRouter = require('./routes/authRoute')
+const authRouter = require('./routes/authRoute');
+const productRouter = require('./routes/productRoute');
 
 app.use('/api/auth', authRouter);
+app.use('/api/products', productRouter);
 
 app.get('/', (req, res) => {
     res.send("Hey, What's up?");
